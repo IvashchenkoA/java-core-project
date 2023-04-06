@@ -1,5 +1,13 @@
 public class RRFreightCar extends RailroadCar{
-    public RRFreightCar(int id, boolean connectionRequired, int netWeight, int grossWeight, boolean containsLoad) {
-        super(id, connectionRequired, netWeight, grossWeight, containsLoad);
+    public RRFreightCar(boolean connectionRequired, int netWeight) {
+        super(connectionRequired, netWeight);
+    }
+    public void loadCar(double loadWeight){
+        this.grossWeight += loadWeight;
+        this.containsLoad = true;
+    }
+    public void unloadCar(){
+        this.grossWeight = this.netWeight;
+        this.containsLoad = false;
     }
 }

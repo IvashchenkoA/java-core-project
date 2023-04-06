@@ -1,8 +1,8 @@
 public class PassengerRRCar extends RailroadCar{
-    private int numOfSeats;
+    public int numOfSeats;
 
-    public PassengerRRCar(int id, boolean connectionRequired, int netWeight, int grossWeight, int numOfSeats, boolean containsLoad) {
-        super(id, connectionRequired, netWeight, grossWeight,containsLoad);
+    public PassengerRRCar(boolean connectionRequired, int netWeight, int numOfSeats) {
+        super(connectionRequired, netWeight);
         this.numOfSeats = numOfSeats;
         this.connectionRequired = true;
     }

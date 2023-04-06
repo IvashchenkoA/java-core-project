@@ -4,11 +4,14 @@ public abstract class RailroadCar {
     protected boolean connectionRequired;
     int netWeight, grossWeight;
     protected boolean containsLoad;
-    public RailroadCar(int id,boolean connectionRequired, int netWeight, int grossWeight, boolean containsLoad) {
+    public RailroadCar(boolean connectionRequired, int netWeight) {
         this.id = ++count;
         this.netWeight = netWeight;
-        this.grossWeight = grossWeight;
+        this.grossWeight = netWeight;
         this.connectionRequired = false;
         this.containsLoad = false;
     }
+
+
+
 }
