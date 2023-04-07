@@ -1,6 +1,6 @@
 public class HeavyRRFreightCar extends RailroadCar{
-    public HeavyRRFreightCar(boolean connectionRequired, int netWeight) {
-        super( connectionRequired, netWeight);
+    public HeavyRRFreightCar( int netWeight) {
+        super(netWeight);
     }
     public void loadCar(double loadWeight){
         this.grossWeight += loadWeight;

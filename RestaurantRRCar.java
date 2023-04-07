@@ -1,6 +1,6 @@
 public class RestaurantRRCar extends RailroadCar{
     public RestaurantRRCar(boolean connectionRequired, int netWeight) {
-        super(connectionRequired, netWeight);
+        super(netWeight);
         this.connectionRequired = true;
     }
 }

@@ -1,5 +1,5 @@
 public class GasMatRRFreightCar extends RRFreightCar{
-    public GasMatRRFreightCar(boolean connectionRequired, int netWeight) {
-        super(connectionRequired, netWeight);
+    public GasMatRRFreightCar(int netWeight) {
+        super(netWeight);
     }
 }

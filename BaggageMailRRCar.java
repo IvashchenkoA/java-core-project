@@ -1,5 +1,5 @@
 public class BaggageMailRRCar extends RailroadCar{
-    public BaggageMailRRCar(boolean connectionRequired, int netWeight) {
-        super(connectionRequired, netWeight);
+    public BaggageMailRRCar(int netWeight) {
+        super(netWeight);
     }
 }

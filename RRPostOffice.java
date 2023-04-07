@@ -1,6 +1,6 @@
 public class RRPostOffice extends RailroadCar{
-    public RRPostOffice(boolean connectionRequired, int netWeight) {
-        super(connectionRequired, netWeight);
+    public RRPostOffice(int netWeight) {
+        super(netWeight);
         this.connectionRequired = true;
     }
 }

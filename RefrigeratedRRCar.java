@@ -1,6 +1,6 @@
 public class RefrigeratedRRCar extends RRFreightCar{
     public RefrigeratedRRCar(boolean connectionRequired, int netWeight) {
-        super(connectionRequired, netWeight);
+        super(netWeight);
         this.connectionRequired = true;
     }
 }

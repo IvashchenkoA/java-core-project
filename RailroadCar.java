@@ -4,7 +4,7 @@ public abstract class RailroadCar {
     protected boolean connectionRequired;
     int netWeight, grossWeight;
     protected boolean containsLoad;
-    public RailroadCar(boolean connectionRequired, int netWeight) {
+    public RailroadCar( int netWeight) {
         this.id = ++count;
         this.netWeight = netWeight;
         this.grossWeight = netWeight;
@@ -12,6 +12,10 @@ public abstract class RailroadCar {
         this.containsLoad = false;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "RailroadCar{" +
+                "id=" + id +
+                '}';
+    }
 }
