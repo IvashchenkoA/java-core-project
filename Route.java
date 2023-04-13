@@ -12,7 +12,7 @@ public class Route {
         this.route = setPath();
         this.distance = calcDistance();
         }
-    public List<RailwayStation> setPath(){
+    private List<RailwayStation> setPath(){
         Map<RailwayStation, Integer> neighbourStations = new HashMap<>();
         Map<RailwayStation, RailwayStation> previousStations = new HashMap<>();
         Set<RailwayStation> visited = new HashSet<>();

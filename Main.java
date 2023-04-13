@@ -1,6 +1,18 @@
+import java.util.Scanner;
 public class Main {
+    public void menu(){
+        Scanner scan = new Scanner(System.in);
+        while(true) {
+            System.out.println("\tHello!\nWhat would you like to do?" +
+                    "- create an object -> 1\n- test functionalities ->2");
+            int a = scan.nextInt();
+            if(a == 1){
+                System.out.println("1 - create a station\n2 - create a car\n3 - create ");
+            }
+        }
+    }
     public static void main(String[] args) {
-        /*RailwayStation station1 = new RailwayStation("Kharkiv");
+     /*   RailwayStation station1 = new RailwayStation("Kharkiv");
         RailwayStation station2 = new RailwayStation("Dnipro");
         RailwayStation station3 = new RailwayStation("Poltava");
         RailwayStation station4 = new RailwayStation("Kropivnytski");
@@ -19,16 +31,20 @@ public class Main {
         station6.addNextStation(station7, 15);
 
         Route route1_6 = new Route(station1, station6);
-        route1_6.setPath();
+        Route route6_1= new Route(station6, station1);
         System.out.println(route1_6.route);
+        System.out.println(route6_1.route);
         System.out.println(route1_6.distance);
+        System.out.println(route6_1.distance);
+
+
 
         Route route1_5 = new Route(station1, station5);
-        route1_5.setPath();
+
         System.out.println(route1_5.route);
         System.out.println(route1_5.distance);*/
-
-        Locomotive loc1 = new Locomotive("loc1");
+        RailwayStation station1 = new RailwayStation("Kharkiv");
+        Locomotive loc1 = new Locomotive(station1);
         loc1.setMaxElectricRRCarNumber(2);
         loc1.setMaxLoadWeight(1000);
         loc1.setMaxRRCarNumber(5);
@@ -57,8 +73,12 @@ public class Main {
         } catch (ImpossibleToAddCar e) {
             throw new RuntimeException(e);
         }
-        System.out.println(trainset1.cars);
-        c1.loadPassengers(45);
-        System.out.println(c1.peopleCount);
+        System.out.println(trainset1);
+
+        trainset1.checkLocSpeed();
+        /*System.out.println(trainset1.cars);
+        c1.loadPassengers();
+        System.out.println(c1.peopleCount);*/
     }
+
 }

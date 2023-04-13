@@ -9,6 +9,7 @@ public class PassengerRRCar extends RailroadCar{
         this.numOfSeats = numOfSeats;
         this.connectionRequired = true;
         this.peopleCount = 0;
+        this.type = "Passenger car";
     }
     public void loadPassengers(){
         Scanner scan = new Scanner(System.in);
@@ -19,6 +20,7 @@ public class PassengerRRCar extends RailroadCar{
             if( a + scanPpl <= this.numOfSeats ) {
                 scanPpl += a;
                 this.peopleCount += scanPpl;
+                this.grossWeight += scanPpl * 80;
                 System.out.println("Passengers added successfully.\n\tvacant seats: " + (this.numOfSeats - this.peopleCount) +
                         "\nWould you like to continue?\n\t1 - yes\n\t2 - no");
                 a = scan.nextInt();
@@ -32,8 +34,28 @@ public class PassengerRRCar extends RailroadCar{
                 if (a == 2) return;
             }
         }
-        /*if(!(people > numOfSeats))
-            peopleCount += people;
-        else System.out.println("\t\tFailed to load passengers:\n\ttry adding smaller number.");*/
+    }
+    public void unloadPassengers(){
+        Scanner scan = new Scanner(System.in);
+        int scanned = 0;
+        while(scanned <= this.peopleCount){
+            System.out.println("\tHow many passengers would you like to unload?");
+            int a = scan.nextInt();
+            if(a + scanned <= this.peopleCount){
+                scanned += a;
+                this.peopleCount -= scanned;
+                this.grossWeight -= scanned * 80;
+                System.out.println("Passengers unloaded successfully.\n\tpassenger left: " + (this.peopleCount)+
+                        "\nWould you like to continue?\n\t1 - yes\n\t2 - no");
+                a = scan.nextInt();
+                if(a == 2) return;
+            }
+            else {
+                System.out.println("Too many passengers inserted. Maximum is: " + (this.peopleCount) +
+                        "\nTry again?\n\t1 - yes\n\t2 - no");
+                a = scan.nextInt();
+                if(a == 2) return;
+            }
+        }
     }
 }

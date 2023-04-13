@@ -1,6 +1,5 @@
 public class Locomotive {
-    String name;
-    RailwayStation HomeStation, SourceStation, DestinationStation;
+    RailwayStation homeStation, sourceStation, destinationStation;
     private final int id;
     static int count;
     double speed;
@@ -8,18 +7,32 @@ public class Locomotive {
     private int maxLoadWeight;
     private int maxElectricRRCarNumber;
 
-    public Locomotive(String name) {
-        this.name = name;
+    public Locomotive(RailwayStation homeStation) {
         this.id = ++count;
+        this.homeStation = homeStation;
+        this.speed = 210;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(!Thread.interrupted()){
+                    adjustSpeed();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+        thread.start();
     }
-    public void setSpeed(double speed){
-        this.speed = speed;
-    }
-    public void adjustSpeed(){
+
+    public void adjustSpeed() {
         if(Math.random() > 0.5)
             speed *= 1.03;
         else speed *= 0.97;
     }
+
 
     public void setMaxRRCarNumber(int maxRRCarNumber) {
         this.maxRRCarNumber = maxRRCarNumber;
@@ -34,15 +47,15 @@ public class Locomotive {
     }
 
     public void setHomeStation(RailwayStation homeStation) {
-        HomeStation = homeStation;
+        homeStation = homeStation;
     }
 
     public void setSourceStation(RailwayStation sourceStation) {
-        SourceStation = sourceStation;
+        sourceStation = sourceStation;
     }
 
     public void setDestinationStation(RailwayStation destinationStation) {
-        DestinationStation = destinationStation;
+        destinationStation = destinationStation;
     }
 
     public int getId() {
@@ -67,5 +80,12 @@ public class Locomotive {
 
     public int getMaxElectricRRCarNumber() {
         return maxElectricRRCarNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Locomotive { " +
+                "id=" + id +
+                " }";
     }
 }
