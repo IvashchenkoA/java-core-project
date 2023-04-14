@@ -35,8 +35,8 @@ public class RailwayStation {
 
     @Override
     public String toString() {
-        return "RailwayStation{" +
-                "name='" + name + '\'' +
+        return "RailwayStation {" +
+                "name = '" + name + '\'' +
                 '}';
     }
 }

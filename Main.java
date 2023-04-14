@@ -12,7 +12,7 @@ public class Main {
         }
     }
     public static void main(String[] args) {
-     /*   RailwayStation station1 = new RailwayStation("Kharkiv");
+       RailwayStation station1 = new RailwayStation("Kharkiv");
         RailwayStation station2 = new RailwayStation("Dnipro");
         RailwayStation station3 = new RailwayStation("Poltava");
         RailwayStation station4 = new RailwayStation("Kropivnytski");
@@ -30,29 +30,12 @@ public class Main {
         station5.addNextStation(station7, 30);
         station6.addNextStation(station7, 15);
 
-        Route route1_6 = new Route(station1, station6);
-        Route route6_1= new Route(station6, station1);
-        System.out.println(route1_6.route);
-        System.out.println(route6_1.route);
-        System.out.println(route1_6.distance);
-        System.out.println(route6_1.distance);
-
-
-
-        Route route1_5 = new Route(station1, station5);
-
-        System.out.println(route1_5.route);
-        System.out.println(route1_5.distance);*/
-        RailwayStation station1 = new RailwayStation("Kharkiv");
         Locomotive loc1 = new Locomotive(station1);
-        loc1.setMaxElectricRRCarNumber(2);
-        loc1.setMaxLoadWeight(1000);
-        loc1.setMaxRRCarNumber(5);
 
-        PassengerRRCar c1 = new PassengerRRCar(250,50);
-        RailroadCar c2 = new RRFreightCar(100);
-        RailroadCar c3 = new BaggageMailRRCar(200);
-        RailroadCar c4 = new RRPostOffice(220);
+        PassengerRRCar c1 = new PassengerRRCar(1,50);
+        RailroadCar c2 = new RRFreightCar(1);
+        RailroadCar c3 = new BaggageMailRRCar(2);
+        RailroadCar c4 = new RRPostOffice(2);
 
         Trainset trainset1 = new Trainset(loc1);
         try {
@@ -73,9 +56,23 @@ public class Main {
         } catch (ImpossibleToAddCar e) {
             throw new RuntimeException(e);
         }
-        System.out.println(trainset1);
+       // System.out.println(trainset1);
 
         trainset1.checkLocSpeed();
+        RailwayStation[] a = new RailwayStation[6];
+        a[0] = station1;
+        a[1] = station2;
+        a[2] = station3;
+        a[3] = station4;
+        a[4] = station5;
+        a[5] = station6;
+
+        Locomotive.setArrayStations(a);
+        Thread threadM = new Trainset(loc1);
+
+
+        threadM.start();
+
         /*System.out.println(trainset1.cars);
         c1.loadPassengers();
         System.out.println(c1.peopleCount);*/
