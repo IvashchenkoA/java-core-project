@@ -15,6 +15,6 @@ public abstract class RailroadCar {
 
     @Override
     public String toString() {
-        return this.type + "{ weight: }" + this.grossWeight;
+        return this.type + "{ weight: " + this.grossWeight + " }";
     }
 }

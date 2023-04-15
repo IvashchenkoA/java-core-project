@@ -37,28 +37,28 @@ public class Main {
         RailroadCar c3 = new BaggageMailRRCar(2);
         RailroadCar c4 = new RRPostOffice(2);
 
-        Trainset trainset1 = new Trainset(loc1);
+        Thread trainset1 = new Trainset(loc1);
         try {
-            trainset1.addRRCar(c1);
+            ((Trainset) trainset1).addRRCar(c1);
         } catch (ImpossibleToAddCar e) {
             throw new RuntimeException(e);
         }
         try {
-            trainset1.addRRCar(c2);
+            ((Trainset) trainset1).addRRCar(c2);
         } catch (ImpossibleToAddCar e) {
             throw new RuntimeException(e);
         }try {
-            trainset1.addRRCar(c3);
+            ((Trainset) trainset1).addRRCar(c3);
         } catch (ImpossibleToAddCar e) {
             throw new RuntimeException(e);
         }try {
-            trainset1.addRRCar(c4);
+            ((Trainset) trainset1).addRRCar(c4);
         } catch (ImpossibleToAddCar e) {
             throw new RuntimeException(e);
         }
        // System.out.println(trainset1);
 
-        trainset1.checkLocSpeed();
+        ((Trainset) trainset1).checkLocSpeed();
         RailwayStation[] a = new RailwayStation[6];
         a[0] = station1;
         a[1] = station2;
@@ -68,10 +68,10 @@ public class Main {
         a[5] = station6;
 
         Locomotive.setArrayStations(a);
-        Thread threadM = new Trainset(loc1);
 
 
-        threadM.start();
+
+       trainset1.start();
 
         /*System.out.println(trainset1.cars);
         c1.loadPassengers();

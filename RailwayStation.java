@@ -4,8 +4,8 @@ import java.util.Map;
 import java.util.Queue;
 
 public class RailwayStation {
-    String name;
-    Map<RailwayStation, Integer> nextStation;
+    public String name;
+    public Map<RailwayStation, Integer> nextStation;
     public Queue<Trainset> trainQueue;
     public boolean isRestricted;
     public RailwayStation(String name) {
@@ -29,9 +29,7 @@ public class RailwayStation {
     public void addNextStation(RailwayStation station, int dist){
         nextStation.put(station,dist);
     }
-    public Map<RailwayStation, Integer> getNextStations(){
-        return nextStation;
-    }
+
 
     @Override
     public String toString() {

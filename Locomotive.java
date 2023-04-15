@@ -10,6 +10,7 @@ public class Locomotive {
     private final int maxElectricRRCarNumber;
     public List<RailwayStation> route;
     public int distance = 0;
+
     public static RailwayStation[] arrayStations = new RailwayStation[6];
 
 
@@ -18,24 +19,9 @@ public class Locomotive {
         this.homeStation = homeStation;
         this.currentStation = homeStation;
         this.speed = 130 + Math.random()* 61;
-        this.maxRRCarNumber = (int)(3 + Math.random() * 4);
+        this.maxRRCarNumber = (int)(4 + Math.random() * 4);
         this.maxElectricRRCarNumber = 4;
         this.maxLoadWeight = (int)(40 + Math.random() * 21);
-        Thread thread = new Thread( new Runnable() {
-            @Override
-            public void run() {
-                while(!Thread.interrupted()){
-                    adjustSpeed();
-                    System.out.println("speed: " + getSpeed());
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-        });
-        thread.start();
     }
 
     public void adjustSpeed() {
