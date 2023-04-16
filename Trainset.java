@@ -4,7 +4,7 @@ import java.util.List;
 public class Trainset extends Thread{
     int id;
     static int count;
-    Locomotive locomotive;
+    public Locomotive locomotive;
     List<RailroadCar> cars;
     public int loadedCarsWeight;
     public int connectedCarsCount;
@@ -18,33 +18,27 @@ public class Trainset extends Thread{
         this.id = ++count;
         this.isWaiting = false;
 
-        Thread thread = new Thread( new Runnable() {
-
-            @Override
-            public void run() {
-                while(!Thread.interrupted()){
-                    locomotive.adjustSpeed();
-                    checkLocSpeed();
-                    System.out.println("speed: " + locomotive.getSpeed());
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
+        Thread thread = new Thread(() -> {
+            while(!Thread.interrupted()){
+                locomotive.adjustSpeed();
+                checkLocSpeed();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
         thread.start();
-      //  this.threadMain = new Thread();
     }
     @Override
     public void run(){
         while(!Thread.interrupted()){
             this.locomotive.setSourceStation();
             this.locomotive.setDestinationStation();
-            if(locomotive.currentStation == locomotive.destinationStation){
-                System.out.println("The train " + this.id + "reached it's final destination: "
-                        + locomotive.currentStation);
+            if(this.locomotive.currentStation == this.locomotive.destinationStation){
+                System.out.println("The train " + this.id + " reached it's final destination: "
+                        + this.locomotive.currentStation.name + " speed: " + this.locomotive.speed + "\n");
                 Thread30 thread30 = new Thread30();
                 thread30.start();
                 try {
@@ -52,18 +46,22 @@ public class Trainset extends Thread{
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                this.locomotive.setPath(this.locomotive.destinationStation, this.locomotive.homeStation);
             }
             else {
-                this.locomotive.setPath(locomotive.sourceStation, locomotive.destinationStation);
+                this.locomotive.setPath(this.locomotive.sourceStation, this.locomotive.destinationStation);
                 if (this.locomotive.sourceStation != this.locomotive.homeStation) {
                     List<RailwayStation> tmpList;
                     tmpList = this.locomotive.route;
-                    this.locomotive.setPath(locomotive.homeStation, locomotive.sourceStation);
+                    this.locomotive.setPath(this.locomotive.homeStation, this.locomotive.sourceStation);
+                    this.locomotive.route.remove(locomotive.route.size() - 1);
                     this.locomotive.route.addAll(tmpList);
                 }
+                moveTrainSet();
             }
-            moveTrainSet();
+            if(this.locomotive.currentStation != this.locomotive.homeStation){
+                this.locomotive.setPath(this.locomotive.currentStation, this.locomotive.homeStation);
+                moveTrainSet();
+            }
         }
     }
 
@@ -76,7 +74,8 @@ public class Trainset extends Thread{
     public synchronized void  moveTrainSet(){
         for(int i = 1; i < this.locomotive.route.size(); i++){
             this.locomotive.currentStation = this.locomotive.route.get(i-1);
-            System.out.println("Trainset " + this.id + " current station: " + this.locomotive.currentStation.name);
+            System.out.println("The train " + this.id + ", current station: " + this.locomotive.currentStation.name
+            + ", speed: " + this.locomotive.speed + "\n");
             if(this.locomotive.currentStation.isRestricted){
                 this.locomotive.currentStation.addTrainToQueue(this);
                 while(this.locomotive.currentStation.isRestricted || this.locomotive.currentStation.getTrainFromQueue() != this){
@@ -89,7 +88,7 @@ public class Trainset extends Thread{
                 this.locomotive.currentStation.removeTrainFromQueue();
             }
             this.locomotive.currentStation.isRestricted = true;
-            int currentDist = this.locomotive.currentStation.getNextStations().get(locomotive.route.get(i));
+            int currentDist = this.locomotive.currentStation.nextStation.get(locomotive.route.get(i));
             while(currentDist > 0){
                 currentDist -= (this.locomotive.speed/360);
                 try {
@@ -108,8 +107,9 @@ public class Trainset extends Thread{
             }
             this.locomotive.currentStation.isRestricted = false;
         }
-        System.out.println("The train " + this.id + "reached it's final destination: "
-                + locomotive.currentStation);
+        this.locomotive.currentStation = this.locomotive.destinationStation;
+        System.out.println("The train " + this.id + " reached it's final destination: "
+                + this.locomotive.currentStation.name + " speed: " + this.locomotive.speed + "\n");
         Thread30 thread30 = new Thread30();
         thread30.start();
         try {
@@ -121,9 +121,9 @@ public class Trainset extends Thread{
 
     @Override
     public String toString() {
-        String s = "\n";
-        for(int i = 0; i < cars.size(); i++){
-            s += cars.get(i) + "\n";
+        StringBuilder s = new StringBuilder("\n");
+        for (RailroadCar car : cars) {
+            s.append(car).append("\n");
         }
         return "Trainset { " +
                 "id = " + id +
@@ -143,13 +143,11 @@ public class Trainset extends Thread{
                             cars.sort((car1, car2) -> car1.grossWeight - car2.grossWeight);
                             this.loadedCarsWeight += car.grossWeight;
                             this.connectedCarsCount++;
-                            System.out.println("car is added successfully");
                         } else throw new ImpossibleToAddCar("exceeded number of electrical connections");
                     } else {
                         cars.add(car);
                         cars.sort((car1, car2) -> car1.grossWeight - car2.grossWeight);
                         this.loadedCarsWeight += car.grossWeight;
-                        System.out.println("car is added successfully");
                     }
                 } else throw new ImpossibleToAddCar("exceeded maximum weight");
             } else {
@@ -160,13 +158,13 @@ public class Trainset extends Thread{
                             cars.sort((car1, car2) -> car1.grossWeight - car2.grossWeight);
                             this.loadedCarsWeight += car.netWeight;
                             this.connectedCarsCount++;
-                            System.out.println("car is added successfully");
+
                         } else throw new ImpossibleToAddCar("exceeded number of electrical connections");
                     } else {
                         cars.add(car);
                         cars.sort((car1, car2) -> car1.grossWeight - car2.grossWeight);
                         this.loadedCarsWeight += car.grossWeight;
-                        System.out.println("car is added successfully");
+
                     }
                 } else throw new ImpossibleToAddCar("exceeded maximum weight");
             }
