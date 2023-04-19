@@ -24,15 +24,14 @@ public class PassengerRRCar extends RailroadCar{
                 System.out.println("Passengers added successfully.\n\tvacant seats: " + (this.numOfSeats - this.peopleCount) +
                         "\nWould you like to continue?\n\t1 - yes\n\t2 - no");
                 a = scan.nextInt();
-                if (a == 2) return;
             }
             else {
                 scanPpl -= a;
                 System.out.println("Exceeded possible number of passengers. Maximum is: " + (this.numOfSeats - this.peopleCount) +
                         "\nWould you like to try again?\n\t1 - yes\n\t2 - no");
                 a = scan.nextInt();
-                if (a == 2) return;
             }
+            if (a == 2) return;
         }
     }
     public void loadPeople(){
@@ -60,6 +59,13 @@ public class PassengerRRCar extends RailroadCar{
                 if(a == 2) return;
             }
         }
+    }
+    public static PassengerRRCar getCarById(int i){
+        for(RailroadCar car : carsList){
+            if(car.id == i)
+                return (PassengerRRCar) car;
+        }
+        return null;
     }
 
     public void unloadPeople(){

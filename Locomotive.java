@@ -2,14 +2,14 @@ import java.util.*;
 
 public class Locomotive {
     public RailwayStation homeStation, sourceStation, destinationStation, currentStation;
-    private int id;
+    int id;
     static int count;
     public double speed;
     private final int maxRRCarNumber;
     private final int maxLoadWeight;
     private final int maxElectricRRCarNumber;
     public List<RailwayStation> route;
-    public static List<Locomotive> locList;
+    public static List<Locomotive> locList = new ArrayList<>();
     public static RailwayStation[] arrayOfStations;
 
 
@@ -22,11 +22,19 @@ public class Locomotive {
         this.maxElectricRRCarNumber = 10;//(int)(5 + Math.random()*5) ;
         this.maxLoadWeight = (int)(50 + Math.random() * 31);
     }
-
+    public static void clearList(){
+        locList.clear();
+    }
     public synchronized void adjustSpeed() {
         if(Math.random() > 0.5)
             speed *= 1.03;
         else speed *= 0.97;
+    }
+    public static void setArrayOfStations(List<RailwayStation> list){
+        arrayOfStations = new RailwayStation[list.size()];
+        for(int i = 0; i < list.size(); i++){
+            arrayOfStations[i] = list.get(i);
+        }
     }
     public static void setArrayOfStations(RailwayStation[] a) {
         arrayOfStations = a;
@@ -80,19 +88,19 @@ public class Locomotive {
         path.add(0, from);
         this.route = path;
     }
-    public int calcDistance(){
-        int distance = 0;
+    public double calcDistance(){
+        double distance = 0;
         for(int i = 1; i < route.size(); i++)
             distance += route.get(i - 1).nextStation.get(route.get(i));
         return distance;
     }
 
     public void setSourceStation() {
-        this.sourceStation = arrayOfStations[(int)(Math.random()*100)];
+        this.sourceStation = arrayOfStations[(int)(Math.random()*arrayOfStations.length)];
     }
 
     public void setDestinationStation() {
-        this.destinationStation = arrayOfStations[(int)(Math.random()*100)];
+        this.destinationStation = arrayOfStations[(int)(Math.random()*arrayOfStations.length)];
     }
 
 

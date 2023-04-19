@@ -5,7 +5,7 @@ public class RailwayStation {
     public Map<RailwayStation, Double> nextStation;
     public Queue<Trainset> trainQueue;
     public boolean isRestricted;
-    public static List<RailwayStation> stationsList;
+    public static List<RailwayStation> stationsList = new ArrayList<>();
     public RailwayStation(String name) {
         this.name = name;
         this.nextStation = new HashMap<>();
@@ -18,7 +18,7 @@ public class RailwayStation {
     public static void displayCreatedStations() {
         System.out.println("created stations: ");
         for(RailwayStation station : stationsList){
-            System.out.print(station + "\n ");
+            System.out.print(station.toString() + "\n ");
         }
         System.out.println();
     }
@@ -43,6 +43,9 @@ public class RailwayStation {
             }
         }
         return null;
+    }
+    public static void clearList(){
+        stationsList.clear();
     }
 
     @Override

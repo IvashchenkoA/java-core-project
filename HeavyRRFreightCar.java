@@ -1,4 +1,4 @@
-public class HeavyRRFreightCar extends RailroadCar{
+public class HeavyRRFreightCar extends RRFreightCar{
     public int maxWeightToCarry;
     public HeavyRRFreightCar( int netWeight) {
         super(netWeight);

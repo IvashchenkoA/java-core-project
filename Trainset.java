@@ -12,7 +12,7 @@ public class Trainset extends Thread{
     public double movedDistance;
     public double movedBetween2;
     public double currentDist;
-    public static List<Trainset> trainsList;
+    public static List<Trainset> trainsList = new ArrayList<>();
 
 
     public Trainset(Locomotive locomotive) {
@@ -93,6 +93,7 @@ public class Trainset extends Thread{
             }
             this.locomotive.currentStation.isRestricted = true;
             this.currentDist = this.locomotive.currentStation.nextStation.get(locomotive.route.get(i));
+            this.movedBetween2 = 0;
             while(this.movedBetween2 < this.currentDist){
                 this.movedBetween2 += (this.locomotive.speed/360);
                 try {
@@ -110,7 +111,6 @@ public class Trainset extends Thread{
                 throw new RuntimeException(e);
             }
             this.locomotive.currentStation.isRestricted = false;
-            this.movedBetween2 = 0;
         }
         this.locomotive.currentStation = this.locomotive.destinationStation;
         System.out.println("The train " + this.id + " reached it's final destination: "
@@ -124,15 +124,44 @@ public class Trainset extends Thread{
         }
      }
 
-    public static Trainset getTrainsetByLoc(Locomotive loc){
+    public static Trainset getTrainsetByLocId(int id){
         for(Trainset t : trainsList){
-            if(t.locomotive.equals(loc)){
+            if(t.locomotive.id == id){
                 return t;
             }
         }
         return null;
     }
-
+    public static Trainset getTrainsetByID(int id){
+        for(Trainset tr : trainsList){
+            if(tr.id == id){
+                return tr;
+            }
+        }
+        return null;
+    }
+    public static boolean isConnected(RailroadCar car){
+        for(Trainset trainset : trainsList){
+            for(RailroadCar _car : trainset.cars){
+                if(_car.equals(car))
+                    return true;
+            }
+        }
+        return false;
+    }
+    public void removeTrainset(){
+        for(RailroadCar car : this.cars){
+            RailroadCar.carsList.remove(car);
+        }
+        Locomotive.locList.remove(this.locomotive);
+        trainsList.remove(this);
+    }
+    public synchronized static void displayTrains(){
+        System.out.println("trains created: ");
+        for(Trainset tr : trainsList){
+            System.out.println(tr.toString());
+        }
+    }
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder("\n");
@@ -143,22 +172,35 @@ public class Trainset extends Thread{
                 "id = " + id +
                 ", " + locomotive +
                 ", connected cars = " + s +
-                "\tRoute length: " + this.locomotive.calcDistance() + "\n\n";
+                /*"\tRoute length: " + this.locomotive.calcDistance() +*/ "\n\n";
+    }
+    public static Trainset getTrainsetByCarID(int id){
+        for(Trainset t : trainsList){
+            for(RailroadCar car : t.cars){
+                if(car.id == id){
+                    return t;
+                }
+            }
+        }
+        return null;
     }
     public void addTrainToList(){
         trainsList.add(this);
     }
-    public static void displayTrainsetInfo(List<Trainset> trainsets, int id){
+    public static void clearList(){
+        trainsList.clear();
+    }
+    public static synchronized void displayTrainsetInfo( int id){
         Trainset currentTrainset = null;
-        for(Trainset trainset : trainsets){
+        for(Trainset trainset : trainsList){
             if(trainset.id == id){
                 currentTrainset = trainset;
                 break;
             }
         }
         if (currentTrainset != null) {
-            double p1 = currentTrainset.movedDistance / currentTrainset.locomotive.calcDistance()*100;
-            double p2 = currentTrainset.movedBetween2 / currentTrainset.currentDist;
+            double p1 = (currentTrainset.movedDistance / currentTrainset.locomotive.calcDistance())*100;
+            double p2 = (currentTrainset.movedBetween2 / currentTrainset.currentDist) *100;
             System.out.println(currentTrainset + "\n\t completed distance in the route: " + p1 + "% \n\t" +
                     "completed distance between 2 stations: " + p2 + "%");
         }
@@ -181,6 +223,7 @@ public class Trainset extends Thread{
                         this.loadedCarsWeight += car.grossWeight;
                     }
                 } else throw new ImpossibleToAddCar("exceeded maximum weight");
+
             } else {
                 if (this.loadedCarsWeight + car.netWeight < locomotive.getMaxLoadWeight()) {
                     if (car.connectionRequired) {
