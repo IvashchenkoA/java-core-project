@@ -34,7 +34,8 @@ public class Generator {
     public static void createTrainsets() throws ImpossibleToAddCar {
         Trainset[] trainsets = new Trainset[25];
         for(int i = 0; i < trainsets.length; i++){
-            trainsets[i] = new Trainset(new Locomotive(arrayOfStations[(int)(Math.random()* 100)],arrayOfStations));
+            trainsets[i] = new Trainset(new Locomotive(arrayOfStations[(int)(Math.random()* 100)]));
+            Locomotive.setArrayOfStations(arrayOfStations);
             int a = (int)(5 + Math.random() * 6);
             for(int j = 0; j < a; j++){
                 int b = (int)(1 + Math.random()*12);

@@ -9,8 +9,11 @@ public class Trainset extends Thread{
     public int loadedCarsWeight;
     public int connectedCarsCount;
     public boolean isWaiting;
-    public int movedDistance;
-  //  public Thread threadMain;
+    public double movedDistance;
+    public double movedBetween2;
+    public double currentDist;
+    public static List<Trainset> trainsList;
+
 
     public Trainset(Locomotive locomotive) {
         this.locomotive = locomotive;
@@ -65,8 +68,9 @@ public class Trainset extends Thread{
         }
     }
 
-    public void checkLocSpeed()throws RailroadHazard{
+    public void checkLocSpeed() throws RailroadHazard{
         if(locomotive.speed > 200){
+            locomotive.speed = 130 + Math.random()*51;
             throw new RailroadHazard(this);
         }
     }
@@ -88,16 +92,16 @@ public class Trainset extends Thread{
                 this.locomotive.currentStation.removeTrainFromQueue();
             }
             this.locomotive.currentStation.isRestricted = true;
-            int currentDist = this.locomotive.currentStation.nextStation.get(locomotive.route.get(i));
-            while(currentDist > 0){
-                currentDist -= (this.locomotive.speed/360);
+            this.currentDist = this.locomotive.currentStation.nextStation.get(locomotive.route.get(i));
+            while(this.movedBetween2 < this.currentDist){
+                this.movedBetween2 += (this.locomotive.speed/360);
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
-            this.movedDistance += currentDist;
+            this.movedDistance += this.currentDist;
             Thread2 thread2 = new Thread2();
             thread2.start();
             try {
@@ -106,6 +110,7 @@ public class Trainset extends Thread{
                 throw new RuntimeException(e);
             }
             this.locomotive.currentStation.isRestricted = false;
+            this.movedBetween2 = 0;
         }
         this.locomotive.currentStation = this.locomotive.destinationStation;
         System.out.println("The train " + this.id + " reached it's final destination: "
@@ -119,6 +124,15 @@ public class Trainset extends Thread{
         }
      }
 
+    public static Trainset getTrainsetByLoc(Locomotive loc){
+        for(Trainset t : trainsList){
+            if(t.locomotive.equals(loc)){
+                return t;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder("\n");
@@ -129,11 +143,28 @@ public class Trainset extends Thread{
                 "id = " + id +
                 ", " + locomotive +
                 ", connected cars = " + s +
-                '}';
+                "\tRoute length: " + this.locomotive.calcDistance() + "\n\n";
+    }
+    public void addTrainToList(){
+        trainsList.add(this);
+    }
+    public static void displayTrainsetInfo(List<Trainset> trainsets, int id){
+        Trainset currentTrainset = null;
+        for(Trainset trainset : trainsets){
+            if(trainset.id == id){
+                currentTrainset = trainset;
+                break;
+            }
+        }
+        if (currentTrainset != null) {
+            double p1 = currentTrainset.movedDistance / currentTrainset.locomotive.calcDistance()*100;
+            double p2 = currentTrainset.movedBetween2 / currentTrainset.currentDist;
+            System.out.println(currentTrainset + "\n\t completed distance in the route: " + p1 + "% \n\t" +
+                    "completed distance between 2 stations: " + p2 + "%");
+        }
     }
 
-
-    public void addRRCar(RailroadCar car) throws ImpossibleToAddCar{
+    public <T extends RailroadCar> void addRRCar(T car) throws ImpossibleToAddCar{
         if(this.cars.size() < locomotive.getMaxRRCarNumber()) {
             if (!car.containsLoad) {
                 if (this.loadedCarsWeight + car.netWeight < locomotive.getMaxLoadWeight()) {
@@ -176,11 +207,9 @@ public class Trainset extends Thread{
             throw new ImpossibleToDiscardCar("\terror: No cars are connected to the locomotive");
         }
         else {
-            boolean isFound = false;
             for(int i = 0; i < cars.size(); i++){
                 if(cars.get(i).equals(car)){
                     cars.remove(i);
-                    isFound = true;
                     System.out.println("\tCar is discarded successfully.");
                     return;
                 }

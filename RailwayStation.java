@@ -1,20 +1,27 @@
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 public class RailwayStation {
     public String name;
-    public Map<RailwayStation, Integer> nextStation;
+    public Map<RailwayStation, Double> nextStation;
     public Queue<Trainset> trainQueue;
     public boolean isRestricted;
+    public static List<RailwayStation> stationsList;
     public RailwayStation(String name) {
         this.name = name;
         this.nextStation = new HashMap<>();
         this.trainQueue = new LinkedList<>();
         this.isRestricted = false;
     }
-
+    public void addStationToList(){
+        stationsList.add(this);
+    }
+    public static void displayCreatedStations() {
+        System.out.println("created stations: ");
+        for(RailwayStation station : stationsList){
+            System.out.print(station + "\n ");
+        }
+        System.out.println();
+    }
     public synchronized void addTrainToQueue(Trainset trset) {
         trainQueue.offer(trset);
     }
@@ -26,10 +33,17 @@ public class RailwayStation {
     public synchronized Trainset getTrainFromQueue() {
         return trainQueue.peek();
     }
-    public void addNextStation(RailwayStation station, int dist){
+    public void addNextStation(RailwayStation station, double dist){
         nextStation.put(station,dist);
     }
-
+    public static RailwayStation getStationByName(String name){
+        for(RailwayStation station : stationsList){
+            if(station.name.equals(name)){
+                return station;
+            }
+        }
+        return null;
+    }
 
     @Override
     public String toString() {

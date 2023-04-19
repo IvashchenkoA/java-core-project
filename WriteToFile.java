@@ -13,24 +13,24 @@ public class WriteToFile extends Thread{
     }
     public void run(){
         while(!Thread.interrupted()) {
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                    for (Trainset trainset : trainsArray) {
-                        while (trainset.locomotive.route == null){
-                            try {
-                                Thread.sleep(500);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                for (int i = 0; i < trainsArray.length; i++) {
+                    while (trainsArray[i].locomotive.route == null){
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
                         }
                     }
-                    sortTrainsets();
-                    writer.write("List of trainsets:\n");
-                    for(Trainset trainset : trainsArray)
-                        writer.write(trainset.toString());
                 }
-                catch(Exception e){
-                    throw new RuntimeException(e);
-                }
+                sortTrainsets();
+                writer.write("List of trainsets:\n");
+                for(int i = 0; i < trainsArray.length; i++)
+                    writer.write(trainsArray[i].toString());
+            }
+            catch(Exception e){
+                throw new RuntimeException(e);
+            }
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {

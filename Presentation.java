@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class Presentation {
     public static void main(String[] args) {
         Generator.createStationsAndConnections();
@@ -11,6 +13,9 @@ public class Presentation {
         for (Thread trainset : trainsets) {
             trainset.start();
         }
+        WriteToFile obj = new WriteToFile((Trainset[]) trainsets);
+        obj.start();
+
         /*Thread trainset = new Trainset(new Locomotive(stations[(int)(Math.random()* 100)], stations));
         int a = (int)(5 + Math.random() * 6);
         for(int j = 0; j < a; j++){

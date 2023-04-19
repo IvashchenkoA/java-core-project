@@ -35,6 +35,9 @@ public class PassengerRRCar extends RailroadCar{
             }
         }
     }
+    public void loadPeople(){
+        this.peopleCount = this.numOfSeats;
+    }
     public void unloadPassengers(){
         Scanner scan = new Scanner(System.in);
         int scanned = 0;
@@ -57,5 +60,13 @@ public class PassengerRRCar extends RailroadCar{
                 if(a == 2) return;
             }
         }
+    }
+
+    public void unloadPeople(){
+        this.peopleCount = 0;
+    }
+    @Override
+    public String toString() {
+        return super.toString() + " number of people: " + peopleCount;
     }
 }
