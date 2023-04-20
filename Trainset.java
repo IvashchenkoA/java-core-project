@@ -34,6 +34,9 @@ public class Trainset extends Thread{
         });
         thread.start();
     }
+    public void removeTrainFromQueue(){
+        this.locomotive.currentStation.trainQueue.removeIf(t -> t.equals(this));
+    }
     @Override
     public void run(){
         while(!Thread.interrupted()){
@@ -102,6 +105,7 @@ public class Trainset extends Thread{
                     throw new RuntimeException(e);
                 }
             }
+            this.movedBetween2 = this.currentDist;
             this.movedDistance += this.currentDist;
             Thread2 thread2 = new Thread2();
             thread2.start();
@@ -156,7 +160,7 @@ public class Trainset extends Thread{
         Locomotive.locList.remove(this.locomotive);
         trainsList.remove(this);
     }
-    public synchronized static void displayTrains(){
+    public static synchronized void displayTrains(){
         System.out.println("trains created: ");
         for(Trainset tr : trainsList){
             System.out.println(tr.toString());

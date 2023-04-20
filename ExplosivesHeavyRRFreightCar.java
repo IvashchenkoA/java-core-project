@@ -3,4 +3,5 @@ public class ExplosivesHeavyRRFreightCar extends HeavyRRFreightCar{
         super(netWeight);
         this.type = "Heavy freight car for explosives";
     }
+
 }

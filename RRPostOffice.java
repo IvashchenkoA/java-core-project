@@ -4,4 +4,5 @@ public class RRPostOffice extends RailroadCar{
         this.connectionRequired = true;
         this.type = "Railroad Post Office";
     }
+
 }

@@ -17,21 +17,22 @@ public class PassengerRRCar extends RailroadCar{
         while(scanPpl < this.numOfSeats){
             System.out.println("\tHow many passengers would you like to load? ");
             int a = scan.nextInt();
+            int b;
             if( a + scanPpl <= this.numOfSeats ) {
                 scanPpl += a;
                 this.peopleCount += scanPpl;
                 this.grossWeight += scanPpl * 80;
                 System.out.println("Passengers added successfully.\n\tvacant seats: " + (this.numOfSeats - this.peopleCount) +
                         "\nWould you like to continue?\n\t1 - yes\n\t2 - no");
-                a = scan.nextInt();
+                b = scan.nextInt();
             }
             else {
-                scanPpl -= a;
                 System.out.println("Exceeded possible number of passengers. Maximum is: " + (this.numOfSeats - this.peopleCount) +
                         "\nWould you like to try again?\n\t1 - yes\n\t2 - no");
-                a = scan.nextInt();
+                b = scan.nextInt();
             }
-            if (a == 2) return;
+            if(b == 1)continue;
+            else break;
         }
     }
     public void loadPeople(){
