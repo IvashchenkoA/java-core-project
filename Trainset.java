@@ -176,7 +176,7 @@ public class Trainset extends Thread{
                 "id = " + id +
                 ", " + locomotive +
                 ", connected cars = " + s +
-                /*"\tRoute length: " + this.locomotive.calcDistance() +*/ "\n\n";
+                "\n\n";
     }
     public static Trainset getTrainsetByCarID(int id){
         for(Trainset t : trainsList){

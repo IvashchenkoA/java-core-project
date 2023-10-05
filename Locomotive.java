@@ -18,8 +18,8 @@ public class Locomotive {
         this.homeStation = homeStation;
         this.currentStation = homeStation;
         this.speed = 130 + Math.random()* 61;
-        this.maxRRCarNumber = 10;//(int)(8 + Math.random() * 3);
-        this.maxElectricRRCarNumber = 10;//(int)(5 + Math.random()*5) ;
+        this.maxRRCarNumber = 10;
+        this.maxElectricRRCarNumber = 10;
         this.maxLoadWeight = (int)(50 + Math.random() * 31);
     }
     public static void clearList(){
@@ -67,7 +67,6 @@ public class Locomotive {
                 break;
             }
             visited.add(current);
-
             for (RailwayStation neighbor : current.nextStation.keySet()) {
                 if (!visited.contains(neighbor)) {
                     double distance = neighbourStations.get(current) + current.nextStation.get(neighbor);
@@ -114,14 +113,6 @@ public class Locomotive {
 
     public int getMaxElectricRRCarNumber() {
         return maxElectricRRCarNumber;
-    }
-    public static Locomotive getLocByID(int i){
-        for(Locomotive loc : locList){
-            if(loc.id == i){
-                return loc;
-            }
-        }
-        return null;
     }
 
     @Override
